@@ -1,5 +1,5 @@
 # Build stage
-FROM node:18-alpine AS build
+FROM node:20-alpine AS build
 
 WORKDIR /app
 COPY package*.json ./
@@ -14,8 +14,8 @@ FROM nginx:alpine
 # Instalar curl para healthcheck
 RUN apk add --no-cache curl
 
-# Copiar build do React
-COPY --from=build /app/build /usr/share/nginx/html
+# Copiar build do React (Vite gera em dist/, não build/)
+COPY --from=build /app/dist /usr/share/nginx/html
 
 # Configuração customizada do Nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
