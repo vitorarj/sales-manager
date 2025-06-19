@@ -1,110 +1,88 @@
-name: CI/CD Quick Fix
+name: CI/CD Simple
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [main, develop]
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
 jobs:
+  # ===============================
+  # STAGE 1: BUILD & TEST ONLY
+  # ===============================
   build-and-test:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-    - name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
 
-    - name: Set up Node.js 20
-      uses: actions/setup-node@v4
-      with:
-        node-version: '20'
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20" # Atualizado para v20
 
-    # Backend Build
-    - name: Make gradlew executable
-      run: chmod +x ./backend/gradlew
+      # Backend Build (sem testes por enquanto)
+      - name: Make gradlew executable
+        run: chmod +x ./backend/gradlew
 
-    - name: Build Backend
-      run: |
-        cd backend
-        ./gradlew clean build -x test
-        echo "✅ Backend build successful"
+      - name: Build Backend
+        run: |
+          cd backend
+          ./gradlew clean build -x test
+          echo "✅ Backend build successful"
 
-    # Frontend Build (com fix temporário para TS)
-    - name: Install Frontend Dependencies
-      run: |
-        cd frontend
-        npm install
-        echo "✅ Frontend dependencies installed"
+      # Frontend Build (sem testes por enquanto)
+      - name: Install Frontend Dependencies
+        run: |
+          cd frontend
+          npm install
+          echo "✅ Frontend dependencies installed"
 
-    - name: Fix TypeScript Temporarily
-      run: |
-        cd frontend
-        # Desabilitar erros de variáveis não utilizadas temporariamente
-        if [ -f "tsconfig.json" ]; then
-          # Backup do tsconfig original
-          cp tsconfig.json tsconfig.json.backup
-          
-          # Adicionar configuração para ignorar unused vars
-          node -e "
-            const fs = require('fs');
-            const config = JSON.parse(fs.readFileSync('tsconfig.json', 'utf8'));
-            config.compilerOptions = config.compilerOptions || {};
-            config.compilerOptions.noUnusedLocals = false;
-            config.compilerOptions.noUnusedParameters = false;
-            fs.writeFileSync('tsconfig.json', JSON.stringify(config, null, 2));
-          "
-          echo "✅ TypeScript config temporarily fixed"
-        fi
+      - name: Build Frontend
+        run: |
+          cd frontend
+          npm run build
+          echo "✅ Frontend build successful"
 
-    - name: Build Frontend
-      run: |
-        cd frontend
-        npm run build
-        echo "✅ Frontend build successful"
+      # Test Docker builds
+      - name: Test Backend Docker Build
+        run: |
+          cd backend
+          docker build -t sales-backend-test .
+          echo "✅ Backend Docker build successful"
 
-    # Test Docker builds
-    - name: Test Backend Docker Build
-      run: |
-        cd backend
-        docker build -t sales-backend-test .
-        echo "✅ Backend Docker build successful"
+      - name: Test Frontend Docker Build
+        run: |
+          cd frontend
+          docker build -t sales-frontend-test .
+          echo "✅ Frontend Docker build successful"
 
-    - name: Test Frontend Docker Build
-      run: |
-        cd frontend
-        docker build -t sales-frontend-test .
-        echo "✅ Frontend Docker build successful"
+      # Upload artifacts
+      - name: Upload Backend JAR
+        uses: actions/upload-artifact@v4
+        with:
+          name: backend-jar
+          path: backend/build/libs/*.jar
+          retention-days: 1
 
-    # Upload artifacts
-    - name: Upload Backend JAR
-      uses: actions/upload-artifact@v4
-      with:
-        name: backend-jar
-        path: backend/build/libs/*.jar
-        retention-days: 1
+      - name: Upload Frontend Build
+        uses: actions/upload-artifact@v4
+        with:
+          name: frontend-build
+          path: frontend/build/
+          retention-days: 1
 
-    - name: Upload Frontend Build
-      uses: actions/upload-artifact@v4
-      with:
-        name: frontend-build
-        path: frontend/build/
-        retention-days: 1
-
-    - name: Success Summary
-      run: |
-        echo "🎉 Build completo com sucesso!"
-        echo "✅ Backend compilado"
-        echo "✅ Frontend compilado (com fix temporário TS)"
-        echo "✅ Docker images testadas"
-        echo "🚀 Pronto para deploy!"
-        echo ""
-        echo "⚠️  PRÓXIMOS PASSOS:"
-        echo "1. Corrigir erros TypeScript no código"
-        echo "2. Restaurar tsconfig.json original"
-        echo "3. Configurar deploy para Render"
+      - name: Success Summary
+        run: |
+          echo "🎉 Build completo com sucesso!"
+          echo "✅ Backend compilado"
+          echo "✅ Frontend compilado"
+          echo "✅ Docker images testadas"
+          echo "🚀 Pronto para deploy!"

@@ -3,9 +3,6 @@ import {
   Users,
   Package,
   ShoppingCart,
-  Plus,
-  Edit,
-  Trash2,
   CheckCircle,
   XCircle,
   Clock,
@@ -26,7 +23,7 @@ interface AdminPanelProps {
   user: LoginResponse;
 }
 
-const AdminPanel: React.FC<AdminPanelProps> = ({ user }) => {
+const AdminPanel: React.FC<AdminPanelProps> = ({}) => {
   const [activeTab, setActiveTab] = useState("overview");
   const [users, setUsers] = useState<User[]>([]);
   const [products, setProducts] = useState<Product[]>([]);

@@ -11,8 +11,6 @@ import {
   PieChart,
   Pie,
   Cell,
-  LineChart,
-  Line,
 } from "recharts";
 import {
   Users,
@@ -20,7 +18,6 @@ import {
   ShoppingCart,
   DollarSign,
   AlertTriangle,
-  TrendingUp,
   RefreshCw,
   Calendar,
 } from "lucide-react";

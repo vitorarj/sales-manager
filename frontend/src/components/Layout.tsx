@@ -10,7 +10,6 @@ import {
   LogOut,
   User,
   Settings,
-  Home,
   ChevronDown,
 } from "lucide-react";
 import type { LoginResponse } from "../services/api";

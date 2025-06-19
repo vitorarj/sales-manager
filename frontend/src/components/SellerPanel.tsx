@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  ShoppingCart,
-  Package,
   CheckCircle,
   XCircle,
   Clock,
