@@ -1,25 +1,26 @@
 server:
-  port: 8080
+  port: ${PORT:8080}
 
 spring:
   application:
     name: sales-management-backend
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/salesdb
-    username: postgres
-    password: postgres
+    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost:5432/salesdb}
+    username: ${SPRING_DATASOURCE_USERNAME:postgres}
+    password: ${SPRING_DATASOURCE_PASSWORD:postgres}
     driver-class-name: org.postgresql.Driver
 
   jpa:
     hibernate:
-      ddl-auto: create-drop
-    show-sql: true
+      ddl-auto: ${DDL_AUTO:update}
+    show-sql: false
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: true
+        format_sql: false
 
 logging:
   level:
-    com.salesmanagement: DEBUG
+    com.salesmanagement: INFO
+    org.springframework: WARN
