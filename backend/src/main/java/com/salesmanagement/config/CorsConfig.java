@@ -14,7 +14,9 @@ public class CorsConfig implements WebMvcConfigurer {
                         "http://localhost:*",
                         "https://localhost:*",
                         "https://meudominio.com",
-                        "https://*.meudominio.com"
+                        "https://*.meudominio.com",
+                        "https://sales-management-frontend.onrender.com",
+                        "https://*.onrender.com",
                 )
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH")
                 .allowedHeaders(
