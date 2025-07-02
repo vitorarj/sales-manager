@@ -266,12 +266,6 @@ mermaidgraph TD
 ✅ FINALIZADO: Pedido completado
 ❌ CANCELADO: Pedido cancelado
 
-📞 Suporte e Contato
-
-📧 Email: [seu-email@exemplo.com]
-🐙 GitHub: https://github.com/vitorarj/sales-manager
-💼 LinkedIn: [Seu LinkedIn]
-
 📄 Licença
 Este projeto foi desenvolvido como desafio técnico e está disponível para fins educacionais e demonstração.
 
@@ -285,5 +279,3 @@ Este projeto foi desenvolvido como desafio técnico e está disponível para fin
 ✅ Arquitetura escalável e bem estruturada
 
 🚀 Acesse o sistema em funcionamento: https://sales-management-frontend.onrender.com
-
-Desenvolvido para demonstrar habilidades técnicas em desenvolvimento full-stack e DevOps
